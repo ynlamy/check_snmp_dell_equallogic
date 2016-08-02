@@ -1,5 +1,6 @@
-check_snmp_dell_equallogic is written in Bash and is distributed under the GPLv2 license. This plugin have been created by Yoann LAMY.
 This plugin can check the status of Dell EqualLogic storage using SNMP queries.
+
+check_snmp_dell_equallogic is written in Bash and is distributed under the GPLv2 license. This plugin have been created by Yoann LAMY.
 
 Usage: ./check_snmp_dell_equallogic -H xxx.xxx.xxx.xxx -C public -n BAIE01 -t redundancy
 
