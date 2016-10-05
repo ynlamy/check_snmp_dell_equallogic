@@ -4,7 +4,7 @@ check_snmp_dell_equallogic is written in Bash and is distributed under the GPLv2
 
 Usage: ./check_snmp_dell_equallogic -H xxx.xxx.xxx.xxx -C public -n BAIE01 -t redundancy
 
--H ADDRESS"
+-H ADDRESS
 Name or IP address of host (default: 127.0.0.1)
 -C STRING
 Community name for the host's SNMP agent (default: public)
