@@ -42,7 +42,7 @@ Examples :
 ./check_snmp_dell_equallogic -H xxx.xxx.xxx.xxx -C public -n BAIE01 -t disk -d 1
 ./check_snmp_dell_equallogic -H xxx.xxx.xxx.xxx -C public -n BAIE01 -t fan
 ./check_snmp_dell_equallogic -H xxx.xxx.xxx.xxx -C public -n BAIE01 -t health
-./check_snmp_dell_equallogic -H xxx.xxx.xxx.xxx -C public -n BAIE01 -t io
+./check_snmp_dell_equallogic -H xxx.xxx.xxx.xxx -C public -n BAIE01 -t io -w 2000 -c 3000
 ./check_snmp_dell_equallogic -H xxx.xxx.xxx.xxx -C public -n BAIE01 -t latency
 ./check_snmp_dell_equallogic -H xxx.xxx.xxx.xxx -C public -n BAIE01 -t network -i eth0 -m 9000 -s 1000
 ./check_snmp_dell_equallogic -H xxx.xxx.xxx.xxx -C public -n BAIE01 -t redundancy
