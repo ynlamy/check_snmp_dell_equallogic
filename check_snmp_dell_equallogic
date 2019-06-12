@@ -446,11 +446,30 @@ if [ -n "$NAME" ]; then
       DESCRIPTION="Member '${NAME}' - Info : Storage Array Dell EqualLogic '${MODEL}' (${SERIALNUMBER}) has $CONTROLLERS controllers and $DISKS hard drives"
       STATE=$STATE_OK
     elif [ $TYPE = "io" ]; then
-      # Check I/O performance (Usage : ./check_snmp_dell_equallogic -H 127.0.0.1 -C public -n BAIE01 -t io)
-      IO_READ=`$CMD_SNMPGET -t 2 -r 2 -v 2c -c $COMMUNITY -Ovq $HOSTNAME ${OID_IO_READ}.${MEMBER_ID}`
-      IO_WRITE=`$CMD_SNMPGET -t 2 -r 2 -v 2c -c $COMMUNITY -Ovq $HOSTNAME ${OID_IO_WRITE}.${MEMBER_ID}`
-      DESCRIPTION="Member '${NAME}' -  I/O Operations per second : Read counter's value is ${IO_READ} and write counter's value is $IO_WRITE | read=${IO_READ}c;0;0;0 write=${IO_WRITE}c;0;0;0"
-      STATE=$STATE_OK
+      # Check I/O performance (Usage : ./check_snmp_dell_equallogic -H 127.0.0.1 -C public -n BAIE01 -t io -w 2000 -c 3000)
+      IO_READ_BEF=`$CMD_SNMPGET -t 2 -r 2 -v 2c -c $COMMUNITY -Ovq $HOSTNAME ${OID_IO_READ}.${MEMBER_ID}`
+      IO_WRITE_BEF=`$CMD_SNMPGET -t 2 -r 2 -v 2c -c $COMMUNITY -Ovq $HOSTNAME ${OID_IO_WRITE}.${MEMBER_ID}`      
+      IO_TOTAL_BEF=$(($IO_READ_BEF+$IO_WRITE_BEF))
+      sleep 10
+      IO_READ_AFT=`$CMD_SNMPGET -t 2 -r 2 -v 2c -c $COMMUNITY -Ovq $HOSTNAME ${OID_IO_READ}.${MEMBER_ID}`
+      IO_WRITE_AFT=`$CMD_SNMPGET -t 2 -r 2 -v 2c -c $COMMUNITY -Ovq $HOSTNAME ${OID_IO_WRITE}.${MEMBER_ID}`      
+      IO_TOTAL_AFT=$(($IO_READ_AFT+$IO_WRITE_AFT))
+      IO_TOTAL=$(($IO_TOTAL_AFT-$IO_TOTAL_BEF)/10)
+
+      if [ -n "$IO_TOTAL" ]; then
+        if [ $WARNING != 0 ] || [ $CRITICAL != 0 ]; then
+          if [ $IO_TOTAL -gt $CRITICAL ] && [ $CRITICAL != 0 ]; then
+            STATE=$STATE_CRITICAL
+          elif [ $IO_TOTAL -gt $WARNING ] && [ $WARNING != 0 ]; then
+            STATE=$STATE_WARNING
+          else
+            STATE=$STATE_OK
+          fi
+        else
+          STATE=$STATE_OK
+        fi
+        DESCRIPTION="Member '${NAME}' -  I/O Operations per second : ${IO_TOTAL} | iops=${IO_TOTAL};$WARNING;$CRITICAL;0"
+      fi
     elif [ $TYPE = "latency" ]; then
       # Check average latency (Usage : ./check_snmp_dell_equallogic -H 127.0.0.1 -C public -n BAIE01 -t latency)
       LATENCY_READ=`$CMD_SNMPGET -t 2 -r 2 -v 2c -c $COMMUNITY -Ovq $HOSTNAME ${OID_LATENCY_READ}.${MEMBER_ID}`
