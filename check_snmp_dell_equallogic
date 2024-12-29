@@ -2,16 +2,16 @@
 
 # check_snmp_dell_equallogic
 # Description : Check the status of Dell EqualLogic storage
-# Version : 1.5
+# Version : 1.6
 # Author : Yoann LAMY
 # Licence : GPLv2
 
 # Commands
-CMD_BASENAME="/bin/basename"
+CMD_BASENAME="/usr/bin/basename"
 CMD_SNMPGET="/usr/bin/snmpget"
 CMD_SNMPWALK="/usr/bin/snmpwalk"
-CMD_AWK="/bin/awk"
-CMD_GREP="/bin/grep"
+CMD_AWK="/usr/bin/awk"
+CMD_GREP="/usr/bin/grep"
 CMD_BC="/usr/bin/bc"
 CMD_EXPR="/usr/bin/expr"
 
@@ -19,7 +19,7 @@ CMD_EXPR="/usr/bin/expr"
 SCRIPTNAME=`$CMD_BASENAME $0`
 
 # Version
-VERSION="1.5"
+VERSION="1.6"
 
 # Plugin return codes
 STATE_OK=0
@@ -532,7 +532,7 @@ if [ -n "$NAME" ]; then
         6)
           DESCRIPTION="$DESCRIPTION RAID failure"
           STATE=$STATE_CRITICAL
-        ;;    
+        ;;
         7)
           DESCRIPTION="$DESCRIPTION RAID is resizing"
           STATE=$STATE_WARNING
@@ -650,7 +650,7 @@ if [ -n "$NAME" ]; then
         else
           STATE=$STATE_OK
         fi
-        
+
         VALUE=$VOLUME_TOTAL
         size_convert
         VOLUME_TOTAL_FORMAT=$VALUE
